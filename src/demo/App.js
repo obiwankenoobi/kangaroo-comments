@@ -1,16 +1,32 @@
-import React from 'react';
-import Comments from '../lib';
+import React from "react";
+import Comments from "../lib";
 // import { SecondExample } from '../lib';
 
 const App = () => (
   <div>
-  {style}
-  <Comments 
-    siteName={'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3ZWJzaXRlTmFtZSI6InRlc3RpbmciLCJpYXQiOjE1MzY3NTM3ODd9.dVn2x_8SCnEGtCpU2lZsH8xXGkU9MdayT0h_OhxWyaM'}
-    pageName={'page3'}/>
+    {style}
+    <Comments
+      siteName={
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3ZWJzaXRlTmFtZSI6ImFub3RoZXJvbmUiLCJpYXQiOjE1MzY5OTQ3MTd9.TFCFRtHn9PPPawMTKus6zYWK9BLVj_pCiQ0quBX78PA"
+      }
+      pageName={"page12"}
+    />
     <footer>
-    <p className='footer-p text-center'>built with <span role="img" aria-label="thinking"> ❤️ </span> by <a target='_blank' className='a-gh' href='https://github.com/obiwankenoobi'>@obiwankenoobi</a></p>
-  </footer>
+      <p className="footer-p text-center">
+        built with{" "}
+        <span role="img" aria-label="thinking">
+          {" "}
+          ❤️{" "}
+        </span>{" "}
+        by{" "}
+        <a
+          target="_blank"
+          className="a-gh"
+          href="https://github.com/obiwankenoobi">
+          @obiwankenoobi
+        </a>
+      </p>
+    </footer>
   </div>
 );
 
@@ -76,7 +92,6 @@ let style = (
       }
     `}
   </style>
-)
-
+);
 
 export default App;
