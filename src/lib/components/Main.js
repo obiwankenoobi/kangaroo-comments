@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import CommentsList from "./CommentsList";
-import axios from "axios";
-import socketIOClient from "socket.io-client";
-import { connect } from "react-redux";
-import helpers from "../config";
-import MaterialBtn from "@material-ui/core/Button";
+import React, { Component } from 'react';
+import CommentsList from './CommentsList';
+import axios from 'axios';
+import socketIOClient from 'socket.io-client';
+import { connect } from 'react-redux';
+import helpers from '../config';
+import MaterialBtn from '@material-ui/core/Button';
 import {
   fetchCommentsFromServer,
   updateNewComment,
   addWebsiteDataToStore,
-  noSiteHandler
-} from "../actions/commentsAction";
-import NameLogin from "./NameLogin";
-import "semantic-ui-css/semantic.min.css";
-import { TextArea } from "semantic-ui-react";
-import MetaTags from "react-meta-tags";
+  noSiteHandler,
+} from '../actions/commentsAction';
+import NameLogin from './NameLogin';
+import 'semantic-ui-css/semantic.min.css';
+import { TextArea } from 'semantic-ui-react';
+import MetaTags from 'react-meta-tags';
 
 class Main extends Component {
   constructor(props) {
@@ -22,16 +22,17 @@ class Main extends Component {
     this.state = {
       siteName: this.props.websiteData.siteName, // the website name
       pageName: this.props.websiteData.pageName, // the spesific page name
-      noEnoughChars: false
+      noEnoughChars: false,
     };
   }
 
   componentWillMount() {
+    // add listener to new comments
     this.broadcastComments();
   }
 
   componentDidMount() {
-    // add details to store
+    // add the current website details to store
     this.props.addWebsiteDataToStore(this.props.siteName, this.props.pageName);
 
     // fetch initial comments
@@ -46,8 +47,9 @@ class Main extends Component {
     const socket = socketIOClient(`${helpers.server}`); // open socket connection
 
     // add event listener to `comment` event with arg of the <comments> array from the server
-    socket.on("comment", comments => {
-      helpers.alertD("comments broadcast", comments);
+    // on every 'comment' event the server will send data which we have access to in the <comments> param
+    socket.on('comment', comments => {
+      helpers.alertD('comments broadcast', comments);
       // checking if this page is the page with the data we want
       // meaning - Socket will sent the whole comments from the server so here
       // we make sure to recieve only these who match our params
@@ -55,11 +57,11 @@ class Main extends Component {
         comments.siteName == this.props.websiteData.siteName &&
         comments.pageName == this.props.websiteData.pageName
       ) {
-        helpers.alertD("update", comments.response);
+        helpers.alertD('update', comments.response);
         const commentsData = comments.response;
-        helpers.alertD("this.state", this.state);
+        helpers.alertD('this.state', this.state);
         // update new comments object in redux store
-        this.props.updateNewComment(commentsData);
+        this.props.updateNewComment(commentsData); // <== redux action to update the store with the new comments
       }
     });
   };
@@ -71,30 +73,33 @@ class Main extends Component {
       siteName: this.props.websiteData.siteName, // the website name
       pageName: this.props.websiteData.pageName, // the spesific page name
       text: this.state.textBox, // the text to reply on
-      date: new Date()
+      date: new Date(),
     };
     axios.post(`${helpers.server}/addcomment`, commentToAdd).then(res => {
-      helpers.alertD("response after comment sent", res.data);
+      helpers.alertD('response after comment sent', res.data);
 
-      if (res.data != "noSiteFound") {
+      if (res.data != 'noSiteFound') {
         this.setState(
           {
             openReply: false,
-            textBox: ""
+            textBox: '',
           },
           () => {
             let pageData = {
               siteName: this.props.websiteData.siteName, // the website name
-              pageName: this.props.websiteData.pageName // the spesific page name
+              pageName: this.props.websiteData.pageName, // the spesific page name
             };
-            // on response (after comment are updated in the db) emit `comment` event to the server to update the UI
+
+            // on response (after comment are updated in the db)
+            // open a socket connection &&
+            // emit/send `comment` event to the server with the data
             const socket = socketIOClient(`${helpers.server}`);
-            socket.emit("comment", pageData);
-            helpers.alertD("msg sent");
+            socket.emit('comment', pageData);
+            helpers.alertD('msg sent');
           }
         );
       } else {
-        console.log("no site exist with that token");
+        console.error('no site exist with that token');
         this.props.noSiteHandler();
       }
     });
@@ -118,8 +123,8 @@ class Main extends Component {
     if (!comment || comment.length < 5 || comment.length > 1000) {
       this.setState({
         noEnoughChars: true,
-        borderInputError: "#E9B1B2",
-        bgInputError: "#FFF5F6"
+        borderInputError: '#E9B1B2',
+        bgInputError: '#FFF5F6',
       });
     } else {
       sendCommentCB();
@@ -137,23 +142,24 @@ class Main extends Component {
   render() {
     // css to make the error validation on each input
     let textBoxErrorCSS = {
-      borderColor: this.state.noEnoughChars ? this.state.borderInputError : "",
-      backgroundColor: this.state.noEnoughChars ? this.state.bgInputError : ""
+      borderColor: this.state.noEnoughChars ? this.state.borderInputError : '',
+      backgroundColor: this.state.noEnoughChars ? this.state.bgInputError : '',
     };
-    helpers.alertD("this.props.noSiteFound", this.props.noSiteFound);
+    helpers.alertD('this.props.noSiteFound', this.props.noSiteFound);
 
     // set of rules to know when to render Name input od the Send function
     // basically if user aint "logged in" yet
     let actionBtn = (
       <div>
-        {JSON.parse(localStorage.getItem("user")) &&
-        JSON.parse(localStorage.getItem("user")).name != "" ? (
+        {JSON.parse(localStorage.getItem('user')) &&
+        JSON.parse(localStorage.getItem('user')).name != '' ? (
           <MaterialBtn
             onClick={() =>
               this.isEnoughChars(this.state.textBox, this.sendRootComment)
             }
             className="sendBtn"
-            color="primary">
+            color="primary"
+          >
             send
           </MaterialBtn>
         ) : (
@@ -195,14 +201,15 @@ class Main extends Component {
           />
           {this.state.noEnoughChars ? (
             <label
-              style={{ color: "red", position: "relative", float: "right" }}>
+              style={{ color: 'red', position: 'relative', float: 'right' }}
+            >
               min 5 chars and max 1000 chars
             </label>
           ) : null}
 
           {actionBtn}
 
-          {this.props.noSiteFound != "noSiteFound" ? (
+          {this.props.noSiteFound != 'noSiteFound' ? (
             <CommentsList comments={this.props.commentsArray} />
           ) : null}
         </div>
@@ -248,7 +255,7 @@ const mapStateToProps = state => ({
   user: state.comments.user,
   commentsArray: state.comments.commentsArray,
   noSiteFound: state.comments.noSiteFound,
-  websiteData: state.comments.websiteData
+  websiteData: state.comments.websiteData,
 });
 
 export default connect(
@@ -257,6 +264,6 @@ export default connect(
     fetchCommentsFromServer,
     updateNewComment,
     addWebsiteDataToStore,
-    noSiteHandler
+    noSiteHandler,
   }
 )(Main);

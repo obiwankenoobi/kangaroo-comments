@@ -1,5 +1,5 @@
-import React from "react";
-import Comments from "../lib";
+import React from 'react';
+import Comments from '../lib';
 // import { SecondExample } from '../lib';
 
 const App = () => (
@@ -7,22 +7,23 @@ const App = () => (
     {style}
     <Comments
       siteName={
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3ZWJzaXRlTmFtZSI6ImFub3RoZXJvbmUiLCJpYXQiOjE1MzY5OTQ3MTd9.TFCFRtHn9PPPawMTKus6zYWK9BLVj_pCiQ0quBX78PA"
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3ZWJzaXRlTmFtZSI6ImFub3RoZXJvbmUiLCJpYXQiOjE1MzY5OTQ3MTd9.TFCFRtHn9PPPawMTKus6zYWK9BLVj_pCiQ0quBX78PA'
       }
-      pageName={"page12"}
+      pageName={'page13'}
     />
     <footer>
       <p className="footer-p text-center">
-        built with{" "}
+        built with{' '}
         <span role="img" aria-label="thinking">
-          {" "}
-          ❤️{" "}
-        </span>{" "}
-        by{" "}
+          {' '}
+          ❤️{' '}
+        </span>{' '}
+        by{' '}
         <a
           target="_blank"
           className="a-gh"
-          href="https://github.com/obiwankenoobi">
+          href="https://github.com/obiwankenoobi"
+        >
           @obiwankenoobi
         </a>
       </p>
