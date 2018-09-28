@@ -17,6 +17,8 @@ import 'semantic-ui-css/semantic.min.css';
 import { TextArea } from 'semantic-ui-react';
 import MetaTags from 'react-meta-tags';
 import crypto from 'crypto';
+import GoogleButton from 'react-google-button';
+import { GoogleLoginButton } from 'react-social-login-buttons';
 
 class Main extends Component {
   constructor(props) {
@@ -204,11 +206,6 @@ class Main extends Component {
     };
     helpers.alertD('this.props.noSiteFound', this.props.noSiteFound);
 
-    // google auth button
-    let googleBtn = (
-      <button onClick={this.openGoogleAuth}>Login with google</button>
-    );
-
     // set of rules to know when to render Name input od the Send function
     // basically if user aint "logged in" yet
     let actionBtn = (
@@ -228,7 +225,22 @@ class Main extends Component {
           </MaterialBtn>
         ) : (
           <div>
-            {googleBtn}
+            <div>
+              <GoogleLoginButton
+                style={{
+                  fontSize: '12px',
+                  width: '150px',
+                  height: '30px',
+                  margin: 0,
+                  borderRadius: '5px',
+                }}
+                onClick={this.openGoogleAuth}
+                iconSize={'20px'}
+              >
+                <span>Login to comment</span>
+              </GoogleLoginButton>
+            </div>
+
             <br />
             <br />
           </div>
