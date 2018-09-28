@@ -107,22 +107,20 @@ class SingleComment extends Component {
     let actionBtn = (
       <div>
         {// this.props.user.accessToken ?
-        JSON.parse(localStorage.getItem('user')) &&
-        JSON.parse(localStorage.getItem('user')).name != '' ? (
-          <MaterialBtn
-            color="primary"
-            onClick={() =>
-              this.isEnoughChars(this.state.replyMsg, () =>
-                this.sendCommend(this.props.commentId, this.state.replyMsg)
-              )
-            }
-            className="sendBtn"
-          >
-            send
-          </MaterialBtn>
-        ) : (
-          <NameLogin />
-        )}
+        this.props.user &&
+          this.props.user.name && (
+            <MaterialBtn
+              color="primary"
+              onClick={() =>
+                this.isEnoughChars(this.state.replyMsg, () =>
+                  this.sendCommend(this.props.commentId, this.state.replyMsg)
+                )
+              }
+              className="sendBtn"
+            >
+              send
+            </MaterialBtn>
+          )}
       </div>
     );
     return (
@@ -143,7 +141,7 @@ class SingleComment extends Component {
         {this.state.openReply ? (
           <div>
             <TextArea
-              style={{ ...textBoxErrorCSS, minHeight: 100 }}
+              style={{ ...textBoxErrorCSS, minHeight: 100, width: '100%' }}
               value={this.state.replyMsg}
               type="text"
               onChange={e => this.handleInput(e)}

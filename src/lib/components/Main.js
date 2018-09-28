@@ -10,6 +10,7 @@ import {
   updateNewComment,
   addWebsiteDataToStore,
   noSiteHandler,
+  nameLoginHandler,
 } from '../actions/commentsAction';
 import NameLogin from './NameLogin';
 import 'semantic-ui-css/semantic.min.css';
@@ -42,6 +43,11 @@ class Main extends Component {
       this.props.siteName, // by siteName
       this.props.pageName // bt pageName
     );
+
+    // set the user object in store
+    if (localStorage.getItem('user')) {
+      this.props.nameLoginHandler(JSON.parse(localStorage.getItem('user')));
+    }
   }
 
   // function to create socket listener to new comments
@@ -70,6 +76,7 @@ class Main extends Component {
 
   // function to send comment to the root of the page and not to other comment
   sendRootComment = () => {
+    console.log('this.props.user.name', this.props.user.name);
     let commentToAdd = {
       usernameWhoComment: this.props.user.name,
       siteName: this.props.websiteData.siteName, // the website name
@@ -118,7 +125,7 @@ class Main extends Component {
 
   // check if the length of the input is meet the rules
   // if id doesnt add an error to state
-  isEnoughChars = (
+  validateNameAndSendComment = (
     comment, // comment string
     sendCommentCB // send comment callback
   ) => {
@@ -152,17 +159,25 @@ class Main extends Component {
       }&pageName=${this.props.pageName}&token=${token}`,
       '_blank'
     );
-    console.log('this.props.pageName', this.props.pageName);
-    this.googleAuthListener(token);
+
+    this.googleAuthListener(token); // creating socket listener with the client token to match when the user object returned
   };
 
+  // listener to google auth
   googleAuthListener = token => {
-    // listener to google auth
     const socket = socketIOClient(`${helpers.server}`); // open socket connection
     socket.on(
-      `${this.props.siteName}-${this.props.pageName}-${token}`,
+      `googleAuth-${this.props.siteName}-${this.props.pageName}-${token}`,
       userAuth => {
         console.log('getting data', userAuth);
+
+        // setting the user name in the localstorage
+        let userSession = {
+          name: userAuth.user.displayName,
+        };
+        console.log('userSession', userSession);
+        localStorage.setItem('user', JSON.stringify(userSession));
+        this.props.nameLoginHandler(JSON.parse(localStorage.getItem('user')));
       }
     );
   };
@@ -181,6 +196,7 @@ class Main extends Component {
   };
 
   render() {
+    console.log('this.props.user', this.props.user);
     // css to make the error validation on each input
     let textBoxErrorCSS = {
       borderColor: this.state.noEnoughChars ? this.state.borderInputError : '',
@@ -188,15 +204,22 @@ class Main extends Component {
     };
     helpers.alertD('this.props.noSiteFound', this.props.noSiteFound);
 
+    // google auth button
+    let googleBtn = (
+      <button onClick={this.openGoogleAuth}>Login with google</button>
+    );
+
     // set of rules to know when to render Name input od the Send function
     // basically if user aint "logged in" yet
     let actionBtn = (
       <div>
-        {JSON.parse(localStorage.getItem('user')) &&
-        JSON.parse(localStorage.getItem('user')).name != '' ? (
+        {this.props.user && this.props.user.name ? (
           <MaterialBtn
             onClick={() =>
-              this.isEnoughChars(this.state.textBox, this.sendRootComment)
+              this.validateNameAndSendComment(
+                this.state.textBox,
+                this.sendRootComment
+              )
             }
             className="sendBtn"
             color="primary"
@@ -205,17 +228,12 @@ class Main extends Component {
           </MaterialBtn>
         ) : (
           <div>
-            <NameLogin noEnoughChars={this.state.noEnoughChars} />
+            {googleBtn}
             <br />
             <br />
           </div>
         )}
       </div>
-    );
-
-    // google auth button
-    let googleBtn = (
-      <button onClick={this.openGoogleAuth}>Login with google</button>
     );
 
     return (
@@ -236,7 +254,6 @@ class Main extends Component {
         </MetaTags>
 
         {this.style}
-        {googleBtn}
 
         <div className="textBox-container">
           <TextArea
@@ -248,19 +265,19 @@ class Main extends Component {
             name="textBox"
             className="textBox"
           />
-          {this.state.noEnoughChars ? (
+          {this.state.noEnoughChars && (
             <label
               style={{ color: 'red', position: 'relative', float: 'right' }}
             >
               min 5 chars and max 1000 chars
             </label>
-          ) : null}
+          )}
 
           {actionBtn}
 
-          {this.props.noSiteFound != 'noSiteFound' ? (
+          {this.props.noSiteFound != 'noSiteFound' && (
             <CommentsList comments={this.props.commentsArray} />
-          ) : null}
+          )}
         </div>
       </div>
     );
@@ -314,5 +331,6 @@ export default connect(
     updateNewComment,
     addWebsiteDataToStore,
     noSiteHandler,
+    nameLoginHandler,
   }
 )(Main);
