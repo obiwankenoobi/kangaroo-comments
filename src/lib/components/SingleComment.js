@@ -8,6 +8,7 @@ import CommentCard from './SingleCommentCard';
 import MaterialBtn from '@material-ui/core/Button';
 import NameLogin from './NameLogin';
 import { TextArea } from 'semantic-ui-react';
+import { GoogleLoginButton } from 'react-social-login-buttons';
 
 class SingleComment extends Component {
   constructor(props) {
@@ -107,20 +108,37 @@ class SingleComment extends Component {
     let actionBtn = (
       <div>
         {// this.props.user.accessToken ?
-        this.props.user &&
-          this.props.user.name && (
-            <MaterialBtn
-              color="primary"
-              onClick={() =>
-                this.isEnoughChars(this.state.replyMsg, () =>
-                  this.sendCommend(this.props.commentId, this.state.replyMsg)
-                )
-              }
-              className="sendBtn"
-            >
-              send
-            </MaterialBtn>
-          )}
+        this.props.user && this.props.user.name ? (
+          <MaterialBtn
+            color="primary"
+            onClick={() =>
+              this.isEnoughChars(this.state.replyMsg, () =>
+                this.sendCommend(this.props.commentId, this.state.replyMsg)
+              )
+            }
+            className="sendBtn"
+          >
+            send
+          </MaterialBtn>
+        ) : (
+          <GoogleLoginButton
+            style={{
+              fontSize: '12px',
+              width: '136px',
+              height: '30px',
+              margin: 0,
+              borderRadius: '5px',
+            }}
+            onClick={() =>
+              this.props.openGoogleAuth(this.props.googleAuthListener, () =>
+                this.props.createTokenToMatchSocket(10)
+              )
+            }
+            iconSize={'12px'}
+          >
+            <span>Login to comment</span>
+          </GoogleLoginButton>
+        )}
       </div>
     );
     return (

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import SingleComment from "./SingleComment";
-import { connect } from "react-redux";
-import "semantic-ui-css/semantic.min.css";
-import { orderCommentsToStore } from "../actions/commentsAction";
-import helpers from "../config";
+import React, { Component } from 'react';
+import SingleComment from './SingleComment';
+import { connect } from 'react-redux';
+import 'semantic-ui-css/semantic.min.css';
+import { orderCommentsToStore } from '../actions/commentsAction';
+import helpers from '../config';
 
 class CommentsList extends Component {
   constructor(props) {
@@ -21,11 +21,11 @@ class CommentsList extends Component {
 
   // update unordered comments in state
   updateCommentsOnState = () => {
-    helpers.alertD("this.props.comments", this.props.comments);
+    helpers.alertD('this.props.comments', this.props.comments);
     this.setState(
       {
         comments: this.props.comments,
-        user: this.props.user
+        user: this.props.user,
       },
       () => {
         this.orderComments(this.state.comments, 0); // assigning the commments to state
@@ -42,7 +42,7 @@ class CommentsList extends Component {
       // update the state with the new comments that has being passed from Main.js after socket.io update
       this.setState(
         {
-          comments: this.props.comments
+          comments: this.props.comments,
         },
         () => {
           this.orderComments(this.state.comments, 0); // assigning the commments to state
@@ -64,7 +64,7 @@ class CommentsList extends Component {
         commentId: comment.commentId, // the id of comments
         deep: deep, // the intend we want in comment
         text: comment.text, // the comment text
-        usernameWhoComment: comment.usernameWhoComment // the username who make the comment
+        usernameWhoComment: comment.usernameWhoComment, // the username who make the comment
       });
       this.orderComments(comment.comments, deep + 1); // doing it on each of the <comments> properties
       return this.holder; // not actually doing anything just here to remove warning about returning value from arrow function
@@ -76,7 +76,7 @@ class CommentsList extends Component {
 
   render() {
     return (
-      <div style={{ height: "auto" }} className="commentsList-container">
+      <div style={{ height: 'auto' }} className="commentsList-container">
         {style}
         {this.props.orderedComments
           ? this.props.orderedComments.map((comment, i) => (
@@ -86,6 +86,9 @@ class CommentsList extends Component {
                   depth={comment.deep}
                   text={comment.text}
                   usernameWhoComment={comment.usernameWhoComment}
+                  openGoogleAuth={this.props.openGoogleAuth}
+                  googleAuthListener={this.props.googleAuthListener}
+                  createTokenToMatchSocket={this.props.createTokenToMatchSocket}
                 />
               </div>
             ))
@@ -111,7 +114,7 @@ const style = (
 
 const mapStateToProps = state => ({
   user: state.comments.user,
-  orderedComments: state.comments.orderedComments
+  orderedComments: state.comments.orderedComments,
 });
 
 export default connect(

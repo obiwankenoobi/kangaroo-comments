@@ -65,7 +65,7 @@ export const facebookLogin = response => dispatch => {
   });
 };
 
-export const nameLoginHandler = name => dispatch => {
+export const loginHandler = name => dispatch => {
   // let data = {
   //   accessToken: new Date().getTime(),
   //   name: response,

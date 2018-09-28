@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { Input, Grid } from "semantic-ui-react";
-import { connect } from "react-redux";
-import MaterialBtn from "@material-ui/core/Button";
-import { nameLoginHandler } from "../actions/commentsAction";
-import helpers from "../config";
+import React, { Component } from 'react';
+import { Input, Grid } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import MaterialBtn from '@material-ui/core/Button';
+import { loginHandler } from '../actions/commentsAction';
+import helpers from '../config';
 
 class NameLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "",
-      noEnoughChars: false
+      userName: '',
+      noEnoughChars: false,
     };
   }
 
@@ -24,10 +24,10 @@ class NameLogin extends Component {
 
   // checking if name has enough chars to login
   isEnoughChars = (name, loginWithNameCb) => {
-    helpers.alertD("data.length", name.length);
+    helpers.alertD('data.length', name.length);
     if (!name || name.length < 5 || name.length > 15) {
       this.setState({ noEnoughChars: true }, () => {
-        helpers.alertD("this.state.noEnoughChars", this.state.noEnoughChars);
+        helpers.alertD('this.state.noEnoughChars', this.state.noEnoughChars);
       });
     } else {
       loginWithNameCb();
@@ -45,7 +45,7 @@ class NameLogin extends Component {
   render() {
     return (
       <div>
-        <div style={{ float: "left" }}>
+        <div style={{ float: 'left' }}>
           <Input
             placeholder="whats your name?"
             error={this.state.noEnoughChars ? true : false}
@@ -55,19 +55,20 @@ class NameLogin extends Component {
           />
 
           <MaterialBtn
-            style={{ marginLeft: "3px", marginBottom: "5px" }}
+            style={{ marginLeft: '3px', marginBottom: '5px' }}
             onClick={() =>
               this.isEnoughChars(this.state.userName, () =>
-                this.props.nameLoginHandler(this.state.userName)
+                this.props.loginHandler(this.state.userName)
               )
             }
-            color="primary">
+            color="primary"
+          >
             Join
           </MaterialBtn>
         </div>
         <br />
         {this.state.noEnoughChars ? (
-          <label style={{ color: "red", float: "left", clear: "left" }}>
+          <label style={{ color: 'red', float: 'left', clear: 'left' }}>
             min 5 and max 15 chars
           </label>
         ) : null}
@@ -77,10 +78,10 @@ class NameLogin extends Component {
 }
 
 const mapStateToProps = state => ({
-  nameError: state.comments.nameError
+  nameError: state.comments.nameError,
 });
 
 export default connect(
   mapStateToProps,
-  { nameLoginHandler }
+  { loginHandler }
 )(NameLogin);

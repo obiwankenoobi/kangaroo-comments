@@ -10,14 +10,13 @@ import {
   updateNewComment,
   addWebsiteDataToStore,
   noSiteHandler,
-  nameLoginHandler,
+  loginHandler,
 } from '../actions/commentsAction';
 import NameLogin from './NameLogin';
 import 'semantic-ui-css/semantic.min.css';
 import { TextArea } from 'semantic-ui-react';
 import MetaTags from 'react-meta-tags';
 import crypto from 'crypto';
-import GoogleButton from 'react-google-button';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 
 class Main extends Component {
@@ -46,9 +45,9 @@ class Main extends Component {
       this.props.pageName // bt pageName
     );
 
-    // set the user object in store
+    // set the user auth object in store
     if (localStorage.getItem('user')) {
-      this.props.nameLoginHandler(JSON.parse(localStorage.getItem('user')));
+      this.props.loginHandler(JSON.parse(localStorage.getItem('user')));
     }
   }
 
@@ -151,10 +150,11 @@ class Main extends Component {
   };
 
   // open google auth window with the siteName && pageNAme props as query to later match with the site that has made the call
-  openGoogleAuth = () => {
+  openGoogleAuth = (googleAuthListenerCB, tokenCreateCB) => {
     // creating token to match socket call
-    const token = this.createTokenToMatchSocket(10);
+    const token = tokenCreateCB(10);
 
+    // open auth window
     window.open(
       `http://localhost:3011/auth/google?siteName=${
         this.props.siteName
@@ -162,10 +162,11 @@ class Main extends Component {
       '_blank'
     );
 
-    this.googleAuthListener(token); // creating socket listener with the client token to match when the user object returned
+    // creating socket listener with the client token to match when the user object returned
+    googleAuthListenerCB(token);
   };
 
-  // listener to google auth
+  // listener to googleAuth event in socket
   googleAuthListener = token => {
     const socket = socketIOClient(`${helpers.server}`); // open socket connection
     socket.on(
@@ -179,22 +180,22 @@ class Main extends Component {
         };
         console.log('userSession', userSession);
         localStorage.setItem('user', JSON.stringify(userSession));
-        this.props.nameLoginHandler(JSON.parse(localStorage.getItem('user')));
+        this.props.loginHandler(JSON.parse(localStorage.getItem('user')));
       }
     );
   };
 
   // creating token to match socket call when user will login with google
   // so socket will know where to send the user object
-  createTokenToMatchSocket = string => {
-    if (!Number.isFinite(string)) {
+  createTokenToMatchSocket = chars => {
+    if (!Number.isFinite(chars)) {
       throw new TypeError('Expected a finite number');
     }
 
     return crypto
-      .randomBytes(Math.ceil(string / 2))
+      .randomBytes(Math.ceil(chars / 2))
       .toString('hex')
-      .slice(0, string);
+      .slice(0, chars);
   };
 
   render() {
@@ -229,13 +230,17 @@ class Main extends Component {
               <GoogleLoginButton
                 style={{
                   fontSize: '12px',
-                  width: '150px',
+                  width: '136px',
                   height: '30px',
                   margin: 0,
                   borderRadius: '5px',
                 }}
-                onClick={this.openGoogleAuth}
-                iconSize={'20px'}
+                onClick={() =>
+                  this.openGoogleAuth(this.googleAuthListener, () =>
+                    this.createTokenToMatchSocket(10)
+                  )
+                }
+                iconSize={'12px'}
               >
                 <span>Login to comment</span>
               </GoogleLoginButton>
@@ -288,7 +293,12 @@ class Main extends Component {
           {actionBtn}
 
           {this.props.noSiteFound != 'noSiteFound' && (
-            <CommentsList comments={this.props.commentsArray} />
+            <CommentsList
+              comments={this.props.commentsArray}
+              openGoogleAuth={this.openGoogleAuth}
+              googleAuthListener={this.googleAuthListener}
+              createTokenToMatchSocket={this.createTokenToMatchSocket}
+            />
           )}
         </div>
       </div>
@@ -343,6 +353,6 @@ export default connect(
     updateNewComment,
     addWebsiteDataToStore,
     noSiteHandler,
-    nameLoginHandler,
+    loginHandler,
   }
 )(Main);
