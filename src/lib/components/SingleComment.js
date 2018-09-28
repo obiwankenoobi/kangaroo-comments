@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import helpers from "../config";
-import axios from "axios";
-import socketIOClient from "socket.io-client";
+import React, { Component } from 'react';
+import helpers from '../config';
+import axios from 'axios';
+import socketIOClient from 'socket.io-client';
 
-import { connect } from "react-redux";
-import CommentCard from "./SingleCommentCard";
-import MaterialBtn from "@material-ui/core/Button";
-import NameLogin from "./NameLogin";
-import { TextArea } from "semantic-ui-react";
+import { connect } from 'react-redux';
+import CommentCard from './SingleCommentCard';
+import MaterialBtn from '@material-ui/core/Button';
+import NameLogin from './NameLogin';
+import { TextArea } from 'semantic-ui-react';
 
 class SingleComment extends Component {
   constructor(props) {
     super(props);
     this.state = {
       openReply: false,
-      noEnoughChars: false
+      noEnoughChars: false,
     };
   }
 
@@ -22,7 +22,7 @@ class SingleComment extends Component {
   openReply = id => {
     this.setState(
       {
-        openReply: !this.state.openReply
+        openReply: !this.state.openReply,
       },
       () => helpers.alertD(this.state.openReply, id)
     );
@@ -45,8 +45,8 @@ class SingleComment extends Component {
     if (!comment || comment.length < 5 || comment.length > 1000) {
       this.setState({
         noEnoughChars: true,
-        borderInputError: "#E9B1B2",
-        bgInputError: "#FFF5F6"
+        borderInputError: '#E9B1B2',
+        bgInputError: '#FFF5F6',
       });
     } else {
       sendCommentCB();
@@ -71,44 +71,44 @@ class SingleComment extends Component {
       pageName: this.props.websiteData.pageName, // the spesific page name (ref)
       commentIdToReplyOn: commentIdToReplyOn, // the comment id to reply on (ref)
       text: text, // the text to reply on
-      date: new Date()
+      date: new Date(),
     };
 
     axios.post(`${helpers.server}/addcomment`, commentToAdd).then(() => {
       this.setState(
         {
           openReply: false, // close the reply section after making the comment
-          replyMsg: "" // clean the text prop after replying
+          replyMsg: '', // clean the text prop after replying
         },
         () => {
           // object with the page and site refs to use in the socket server to fetch the data we need according to
           let pageData = {
             siteName: this.props.websiteData.siteName, // the website name
-            pageName: this.props.websiteData.pageName // the spesific page name
+            pageName: this.props.websiteData.pageName, // the spesific page name
           };
 
           // on response (after comment are updated in the db) emit `comment` event to the server to update the UI
           const socket = socketIOClient(`${helpers.server}`);
-          socket.emit("comment", pageData); // emiting `comment` event with the page info
+          socket.emit('comment', pageData); // emiting `comment` event with the page info
         }
       );
-      helpers.alertD("msg sent");
+      helpers.alertD('msg sent');
     });
   };
 
   render() {
     // css to handle errors on inputs
     let textBoxErrorCSS = {
-      borderColor: this.state.noEnoughChars ? this.state.borderInputError : "",
-      backgroundColor: this.state.noEnoughChars ? this.state.bgInputError : ""
+      borderColor: this.state.noEnoughChars ? this.state.borderInputError : '',
+      backgroundColor: this.state.noEnoughChars ? this.state.bgInputError : '',
     };
 
     // this decide if show you login btn or reply btn based on the user status
     let actionBtn = (
       <div>
         {// this.props.user.accessToken ?
-        JSON.parse(localStorage.getItem("user")) &&
-        JSON.parse(localStorage.getItem("user")).name != "" ? (
+        JSON.parse(localStorage.getItem('user')) &&
+        JSON.parse(localStorage.getItem('user')).name != '' ? (
           <MaterialBtn
             color="primary"
             onClick={() =>
@@ -116,7 +116,8 @@ class SingleComment extends Component {
                 this.sendCommend(this.props.commentId, this.state.replyMsg)
               )
             }
-            className="sendBtn">
+            className="sendBtn"
+          >
             send
           </MaterialBtn>
         ) : (
@@ -127,13 +128,12 @@ class SingleComment extends Component {
     return (
       <div
         style={{
-          height: "100%",
-          paddingLeft: `${(this.props.depth * 3).toString()}rem`
+          height: '100%',
+          paddingLeft: `${(this.props.depth * 3).toString()}rem`,
           //marginBottom: `${this.state.openReply ? '50px': ''}` // the margin to use when reply mode is on to allow the textbox be visible
         }}
-        className="msg-container">
-        {this.style}
-
+        className="msg-container"
+      >
         <CommentCard
           usernameWhoComment={this.props.usernameWhoComment}
           text={this.props.text}
@@ -152,7 +152,8 @@ class SingleComment extends Component {
             />
             {this.state.noEnoughChars ? (
               <label
-                style={{ color: "red", position: "relative", float: "right" }}>
+                style={{ color: 'red', position: 'relative', float: 'right' }}
+              >
                 min 5 chars and max 1000 chars
               </label>
             ) : null}
@@ -219,7 +220,7 @@ class SingleComment extends Component {
 
 const mapStateToProps = state => ({
   user: state.comments.user,
-  websiteData: state.comments.websiteData
+  websiteData: state.comments.websiteData,
 });
 
 export default connect(mapStateToProps)(SingleComment);

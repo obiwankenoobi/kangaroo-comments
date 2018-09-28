@@ -15,6 +15,7 @@ import NameLogin from './NameLogin';
 import 'semantic-ui-css/semantic.min.css';
 import { TextArea } from 'semantic-ui-react';
 import MetaTags from 'react-meta-tags';
+import crypto from 'crypto';
 
 class Main extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class Main extends Component {
       siteName: this.props.websiteData.siteName, // the website name
       pageName: this.props.websiteData.pageName, // the spesific page name
       noEnoughChars: false,
+      openGoogleAuth: false,
     };
   }
 
@@ -139,6 +141,45 @@ class Main extends Component {
     }
   };
 
+  // open google auth window with the siteName && pageNAme props as query to later match with the site that has made the call
+  openGoogleAuth = () => {
+    // creating token to match socket call
+    const token = this.createTokenToMatchSocket(10);
+
+    window.open(
+      `http://localhost:3011/auth/google?siteName=${
+        this.props.siteName
+      }&pageName=${this.props.pageName}&token=${token}`,
+      '_blank'
+    );
+    console.log('this.props.pageName', this.props.pageName);
+    this.googleAuthListener(token);
+  };
+
+  googleAuthListener = token => {
+    // listener to google auth
+    const socket = socketIOClient(`${helpers.server}`); // open socket connection
+    socket.on(
+      `${this.props.siteName}-${this.props.pageName}-${token}`,
+      userAuth => {
+        console.log('getting data', userAuth);
+      }
+    );
+  };
+
+  // creating token to match socket call when user will login with google
+  // so socket will know where to send the user object
+  createTokenToMatchSocket = string => {
+    if (!Number.isFinite(string)) {
+      throw new TypeError('Expected a finite number');
+    }
+
+    return crypto
+      .randomBytes(Math.ceil(string / 2))
+      .toString('hex')
+      .slice(0, string);
+  };
+
   render() {
     // css to make the error validation on each input
     let textBoxErrorCSS = {
@@ -172,6 +213,11 @@ class Main extends Component {
       </div>
     );
 
+    // google auth button
+    let googleBtn = (
+      <button onClick={this.openGoogleAuth}>Login with google</button>
+    );
+
     return (
       <div className="App">
         {style}
@@ -188,6 +234,9 @@ class Main extends Component {
             href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css"
           />
         </MetaTags>
+
+        {this.style}
+        {googleBtn}
 
         <div className="textBox-container">
           <TextArea
