@@ -84,11 +84,6 @@ const SingleCommentCard = props => {
     </div>
   );
 
-  console.log(
-    'includes',
-    `${JSON.stringify(date.toString()).includes('Today')}`
-  );
-
   return (
     <Card style={{ width: '100%', marginBottom: '20px' }}>
       <Card.Content>
