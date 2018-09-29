@@ -23,7 +23,7 @@ const SingleCommentCard = props => {
 
   function checkIfcommentToday() {
     if (
-      !new Date(props.date)
+      new Date(props.date)
         .toDateString()
         .split(' ')
         .join()
@@ -41,11 +41,9 @@ const SingleCommentCard = props => {
   let date = (
     <div style={{ marginTop: `-1px` }}>
       {checkIfcommentToday() ? (
-        <p style={{ margin: '-1px', float: 'left' }}>{`Today ${
-          new Date(props.date).toString().split(' ')[4]
-        } ${
-          new Date(props.date).toString().includes('Daylight') ? `AM` : `PM`
-        }`}</p>
+        <p style={{ margin: '-1px', float: 'left' }}>
+          {`Today ${new Date(props.date).toString().split(' ')[4]}`}
+        </p>
       ) : (
         <p style={{ margin: '-1px', float: 'left', marginLeft: '0px' }}>
           {new Date(props.date).toDateString()}
@@ -59,12 +57,30 @@ const SingleCommentCard = props => {
       <p
         style={{
           marginBottom: `-1px`,
-          marginLeft: checkIfcommentToday() && '-8px',
+          marginLeft: checkIfcommentToday() && '-1px',
           fontWeight: 'bold',
         }}
       >
         {props.usernameWhoComment}
       </p>
+    </div>
+  );
+
+  let contentWithPadding = (
+    <div>
+      {checkIfcommentToday() ? (
+        <div style={{ marginLeft: '54px', marginTop: '10px' }}>
+          <Card.Content style={{ textAlign: 'left', width: '100%' }}>
+            <ReactMarkdown source={props.text} />
+          </Card.Content>
+        </div>
+      ) : (
+        <div style={{ marginLeft: '55px', marginTop: '10px' }}>
+          <Card.Content style={{ textAlign: 'left', width: '100%' }}>
+            <ReactMarkdown source={props.text} />
+          </Card.Content>
+        </div>
+      )}
     </div>
   );
 
@@ -103,11 +119,7 @@ const SingleCommentCard = props => {
             {date}
           </div>
         </div>
-        <div style={{ marginLeft: '55px', marginTop: '10px' }}>
-          <Card.Content style={{ textAlign: 'left', width: '100%' }}>
-            <ReactMarkdown source={props.text} />
-          </Card.Content>
-        </div>
+        {contentWithPadding}
       </Card.Content>
 
       <Card.Content extra={true}>
