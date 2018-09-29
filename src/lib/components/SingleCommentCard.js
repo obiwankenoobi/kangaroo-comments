@@ -20,6 +20,59 @@ const SingleCommentCard = props => {
         .split(' ')
         .join()
   );
+
+  function checkIfcommentToday() {
+    if (
+      !new Date(props.date)
+        .toDateString()
+        .split(' ')
+        .join()
+    )
+      return true;
+    else return false;
+  }
+
+  /***
+   ** @date {param}
+   **logic to show time stemp - if today show "Today HH:MM:SS else show full date
+   **if the date string includes "Daylight" write "AM" else write "PM"
+   ***/
+
+  let date = (
+    <div style={{ marginTop: `-1px` }}>
+      {checkIfcommentToday() ? (
+        <p style={{ margin: '-1px', float: 'left' }}>{`Today ${
+          new Date(props.date).toString().split(' ')[4]
+        } ${
+          new Date(props.date).toString().includes('Daylight') ? `AM` : `PM`
+        }`}</p>
+      ) : (
+        <p style={{ margin: '-1px', float: 'left', marginLeft: '0px' }}>
+          {new Date(props.date).toDateString()}
+        </p>
+      )}
+    </div>
+  );
+
+  let usernameWithPadding = (
+    <div>
+      <p
+        style={{
+          marginBottom: `-1px`,
+          marginLeft: checkIfcommentToday() && '-8px',
+          fontWeight: 'bold',
+        }}
+      >
+        {props.usernameWhoComment}
+      </p>
+    </div>
+  );
+
+  console.log(
+    'includes',
+    `${JSON.stringify(date.toString()).includes('Today')}`
+  );
+
   return (
     <Card style={{ width: '100%', marginBottom: '20px' }}>
       <Card.Content>
@@ -45,28 +98,9 @@ const SingleCommentCard = props => {
               marginLeft: '10px',
             }}
           >
-            <p style={{ margin: '-1px', fontWeight: 'bold' }}>
-              {props.usernameWhoComment}
-            </p>
+            {usernameWithPadding}
 
-            <div>
-              {new Date(props.date)
-                .toDateString()
-                .split(' ')
-                .join() ==
-              new Date()
-                .toDateString()
-                .split(' ')
-                .join() ? (
-                <p style={{ margin: '-1px', float: 'left' }}>{`Today ${
-                  new Date(props.date).toString().split(' ')[4]
-                }`}</p>
-              ) : (
-                <p style={{ margin: '-1px', marginLeft: '-14px' }}>
-                  {new Date(props.date).toDateString()}
-                </p>
-              )}
-            </div>
+            {date}
           </div>
         </div>
         <div style={{ marginLeft: '55px', marginTop: '10px' }}>
