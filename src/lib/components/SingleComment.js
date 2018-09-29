@@ -68,6 +68,7 @@ class SingleComment extends Component {
   ) => {
     let commentToAdd = {
       usernameWhoComment: this.props.user.name, // the username who make the comment
+      userAvatar: this.props.user.image, // the user avatar we fetched from google auth
       siteName: this.props.websiteData.siteName, // the website name (ref)
       pageName: this.props.websiteData.pageName, // the spesific page name (ref)
       commentIdToReplyOn: commentIdToReplyOn, // the comment id to reply on (ref)
@@ -152,6 +153,7 @@ class SingleComment extends Component {
       >
         <CommentCard
           usernameWhoComment={this.props.usernameWhoComment}
+          userAvatar={this.props.userAvatar}
           text={this.props.text}
           openReply={() => this.openReply(this.props.commentId)}
         />

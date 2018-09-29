@@ -65,6 +65,7 @@ class CommentsList extends Component {
         deep: deep, // the intend we want in comment
         text: comment.text, // the comment text
         usernameWhoComment: comment.usernameWhoComment, // the username who make the comment
+        userAvatar: comment.userAvatar, // the user avatar
       });
       this.orderComments(comment.comments, deep + 1); // doing it on each of the <comments> properties
       return this.holder; // not actually doing anything just here to remove warning about returning value from arrow function
@@ -86,6 +87,7 @@ class CommentsList extends Component {
                   depth={comment.deep}
                   text={comment.text}
                   usernameWhoComment={comment.usernameWhoComment}
+                  userAvatar={comment.userAvatar}
                   openGoogleAuth={this.props.openGoogleAuth}
                   googleAuthListener={this.props.googleAuthListener}
                   createTokenToMatchSocket={this.props.createTokenToMatchSocket}

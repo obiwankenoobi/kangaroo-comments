@@ -79,7 +79,8 @@ class Main extends Component {
   sendRootComment = () => {
     console.log('this.props.user.name', this.props.user.name);
     let commentToAdd = {
-      usernameWhoComment: this.props.user.name,
+      usernameWhoComment: this.props.user.name, // the user name we fetched from google auth
+      userAvatar: this.props.user.image, // the user avatar we fetched from google auth
       siteName: this.props.websiteData.siteName, // the website name
       pageName: this.props.websiteData.pageName, // the spesific page name
       text: this.state.textBox, // the text to reply on
@@ -88,6 +89,8 @@ class Main extends Component {
     axios.post(`${helpers.server}/addcomment`, commentToAdd).then(res => {
       helpers.alertD('response after comment sent', res.data);
 
+      // the server will return 'noSiteFound' if there isnt match with the data
+      // that has being passed
       if (res.data != 'noSiteFound') {
         this.setState(
           {
@@ -130,6 +133,7 @@ class Main extends Component {
     comment, // comment string
     sendCommentCB // send comment callback
   ) => {
+    // check if the input meet the carterea
     if (!comment || comment.length < 5 || comment.length > 1000) {
       this.setState({
         noEnoughChars: true,
@@ -175,8 +179,13 @@ class Main extends Component {
         console.log('getting data', userAuth);
 
         // setting the user name in the localstorage
+        // TODO : integrate the image with the comment object in the backend so i could show it
         let userSession = {
           name: userAuth.user.displayName,
+          image:
+            userAuth.user.photos.length > 0
+              ? userAuth.user.photos[0].value
+              : '',
         };
         console.log('userSession', userSession);
         localStorage.setItem('user', JSON.stringify(userSession));
@@ -199,6 +208,11 @@ class Main extends Component {
   };
 
   render() {
+    // TEST FOR COMMENTS ARRAY
+    if (this.props.commentsArray.length > 0) {
+      console.log(this.props.commentsArray);
+    }
+
     console.log('this.props.user', this.props.user);
     // css to make the error validation on each input
     let textBoxErrorCSS = {

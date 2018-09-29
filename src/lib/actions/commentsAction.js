@@ -12,14 +12,16 @@ import axios from 'axios';
 
 // fetching the comments array from the server
 export const fetchCommentsFromServer = (siteName, pageName) => dispatch => {
-  helpers.alertD('fetchCommentsFromServer');
+  console.log('fetchCommentsFromServer');
+  console.log('siteName', siteName);
+  console.log('pageName', pageName);
   axios
     .post(`${helpers.server}/fetchComments`, {
       siteName: siteName,
       pageName: pageName,
     })
     .then(response => {
-      console.log(response.data);
+      console.log('response.data', response.data);
       // only assign response if its the comments object (not empty) and not an error string
       if (typeof response.data != 'string') {
         const comments = response.data;
