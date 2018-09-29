@@ -66,6 +66,7 @@ class CommentsList extends Component {
         text: comment.text, // the comment text
         usernameWhoComment: comment.usernameWhoComment, // the username who make the comment
         userAvatar: comment.userAvatar, // the user avatar
+        date: comment.date,
       });
       this.orderComments(comment.comments, deep + 1); // doing it on each of the <comments> properties
       return this.holder; // not actually doing anything just here to remove warning about returning value from arrow function
@@ -91,6 +92,7 @@ class CommentsList extends Component {
                   openGoogleAuth={this.props.openGoogleAuth}
                   googleAuthListener={this.props.googleAuthListener}
                   createTokenToMatchSocket={this.props.createTokenToMatchSocket}
+                  date={comment.date}
                 />
               </div>
             ))

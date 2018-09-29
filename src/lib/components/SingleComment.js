@@ -156,6 +156,7 @@ class SingleComment extends Component {
           userAvatar={this.props.userAvatar}
           text={this.props.text}
           openReply={() => this.openReply(this.props.commentId)}
+          date={this.props.date}
         />
 
         {this.state.openReply ? (
