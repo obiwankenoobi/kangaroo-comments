@@ -157,12 +157,18 @@ class SingleComment extends Component {
           text={this.props.text}
           openReply={() => this.openReply(this.props.commentId)}
           date={this.props.date}
+          lastComment={this.props.lastComment}
+          firstComment={this.props.firstComment}
         />
 
         {this.state.openReply ? (
           <div>
             <TextArea
-              style={{ ...textBoxErrorCSS, minHeight: 100, width: '100%' }}
+              style={{
+                ...textBoxErrorCSS,
+                minHeight: 100,
+                width: '100%',
+              }}
               value={this.state.replyMsg}
               type="text"
               onChange={e => this.handleInput(e)}
@@ -198,7 +204,8 @@ class SingleComment extends Component {
 
         textarea {
           border-radius: 5px;
-          border-color: #d3d3d3;
+          border-color: #f3f3f3;
+          border-width: 1px;
           padding-left: 10px;
           padding-top: 10px;
         }

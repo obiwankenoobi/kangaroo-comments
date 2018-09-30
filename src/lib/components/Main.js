@@ -288,7 +288,11 @@ class Main extends Component {
 
         <div className="textBox-container">
           <TextArea
-            style={{ ...textBoxErrorCSS, minHeight: 100 }}
+            style={{
+              ...textBoxErrorCSS,
+              minHeight: 100,
+
+            }}
             autoHeight={true}
             value={this.state.textBox}
             type="text"
@@ -341,7 +345,8 @@ const style = (
       }
       textarea {
         border-radius: 5px;
-        border-color: #d3d3d3;
+        border-color: #f3f3f3;
+        border-width: 1px;
         padding-left: 10px;
         padding-top: 10px;
       }

@@ -91,6 +91,11 @@ let style = (
       .fab {
         cursor:pointer
       }
+      body {
+        background-color:#f4fcfd;
+        padding:0px;
+        margin:0px;
+    }
     `}
   </style>
 );

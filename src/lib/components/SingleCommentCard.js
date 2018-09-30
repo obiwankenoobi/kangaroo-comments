@@ -91,9 +91,21 @@ const SingleCommentCard = props => {
       )}
     </div>
   );
-
+  console.log('props.lastComment', props.lastComment);
   return (
-    <Card style={{ width: '100%', marginBottom: '20px' }}>
+    <div
+      style={{
+        width: '100%',
+        marginBottom: '20px',
+        borderColor: 'white',
+        borderRadius: '5px',
+        backgroundColor: 'white',
+        padding: '15px',
+        paddingBottom: '50px',
+        //borderBottom: props.lastComment ? '' : 'solid 1px #f3f3f3', // dont add border in last comment
+        borderTop: 'solid 1px #f3f3f3', // dont add border in first comment
+      }}
+    >
       <Card.Content>
         <div
           style={{
@@ -132,7 +144,7 @@ const SingleCommentCard = props => {
           </MaterialBtn>
         </div>
       </Card.Content>
-    </Card>
+    </div>
   );
 };
 

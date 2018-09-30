@@ -93,6 +93,8 @@ class CommentsList extends Component {
                   googleAuthListener={this.props.googleAuthListener}
                   createTokenToMatchSocket={this.props.createTokenToMatchSocket}
                   date={comment.date}
+                  lastComment={this.props.orderedComments.length == i + 1} // check for the last comment
+                  firstComment={i == 0} // check for the first comment
                 />
               </div>
             ))
