@@ -160,9 +160,9 @@ class Main extends Component {
 
     // open auth window
     window.open(
-      `http://localhost:3011/auth/google?siteName=${
-        this.props.siteName
-      }&pageName=${this.props.pageName}&token=${token}`,
+      `${helpers.server}/auth/google?siteName=${this.props.siteName}&pageName=${
+        this.props.pageName
+      }&token=${token}`,
       '_blank'
     );
 

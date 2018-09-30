@@ -7,8 +7,8 @@ import ReactMarkdown from 'react-markdown';
 const SingleCommentCard = props => {
   console.log('props.userAvatar', props.userAvatar);
   console.log('type of time ', new Date(props.date));
-  console.log('date arr', new Date(props.date).toDateString().split(' '));
-  console.log('date arr', new Date().toDateString().split(' '));
+  console.log('commant date', new Date(props.date).toDateString().split(' '));
+  console.log('corrent date', new Date().toDateString().split(' '));
   console.log(
     'equel?',
     new Date(props.date)
@@ -21,15 +21,20 @@ const SingleCommentCard = props => {
         .join()
   );
 
+  // check if the comment made today
   function checkIfcommentToday() {
     if (
       new Date(props.date)
         .toDateString()
         .split(' ')
+        .join() ==
+      new Date()
+        .toDateString()
+        .split(' ')
         .join()
     )
       return true;
-    else return false;
+    return false;
   }
 
   /***
@@ -38,20 +43,22 @@ const SingleCommentCard = props => {
    **if the date string includes "Daylight" write "AM" else write "PM"
    ***/
 
+  // the date yexy with CSS adjustments
   let date = (
     <div style={{ marginTop: `-1px` }}>
       {checkIfcommentToday() ? (
-        <p style={{ margin: '-1px', float: 'left' }}>
+        <small style={{ margin: '-1px', float: 'left' }}>
           {`Today ${new Date(props.date).toString().split(' ')[4]}`}
-        </p>
+        </small>
       ) : (
-        <p style={{ margin: '-1px', float: 'left', marginLeft: '0px' }}>
+        <small style={{ margin: '-1px', float: 'left', marginLeft: '0px' }}>
           {new Date(props.date).toDateString()}
-        </p>
+        </small>
       )}
     </div>
   );
 
+  // the username yexy with CSS adjustments
   let usernameWithPadding = (
     <div>
       <p
@@ -66,6 +73,7 @@ const SingleCommentCard = props => {
     </div>
   );
 
+  // the comment yexy with CSS adjustments
   let contentWithPadding = (
     <div>
       {checkIfcommentToday() ? (
