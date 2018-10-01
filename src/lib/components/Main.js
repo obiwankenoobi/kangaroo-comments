@@ -179,7 +179,6 @@ class Main extends Component {
         console.log('getting data', userAuth);
 
         // setting the user name in the localstorage
-        // TODO : integrate the image with the comment object in the backend so i could show it
         let userSession = {
           name: userAuth.user.displayName,
           image:
@@ -291,7 +290,6 @@ class Main extends Component {
             style={{
               ...textBoxErrorCSS,
               minHeight: 100,
-
             }}
             autoHeight={true}
             value={this.state.textBox}
