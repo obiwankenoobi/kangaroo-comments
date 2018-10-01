@@ -172,6 +172,10 @@ class Main extends Component {
 
   // listener to googleAuth event in socket
   googleAuthListener = token => {
+    helpers.alertD(
+      'socket.on',
+      `googleAuth-${this.props.siteName}-${this.props.pageName}-${token}`
+    );
     const socket = socketIOClient(`${helpers.server}`); // open socket connection
     socket.on(
       `googleAuth-${this.props.siteName}-${this.props.pageName}-${token}`,
@@ -211,8 +215,6 @@ class Main extends Component {
     if (this.props.commentsArray.length > 0) {
       helpers.alertD(this.props.commentsArray);
     }
-
-
 
     helpers.alertD('this.props.user', this.props.user);
     // css to make the error validation on each input
