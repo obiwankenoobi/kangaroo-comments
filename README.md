@@ -29,6 +29,14 @@ will be the token you created when added new website
 #### `pageName` 
 will be a unique identifier so I recomend to use `new Date().getTime().toString()` or any other unique `String` you want, good idea can be the *blog title* as well.
 
+  <h3>
+    Important note about <code>pageName</code>
+  </h3>
+  <code>pageName</code> - CANT end with special characters like $, %,... 
+  <br/>
+  please be cerful! the component wont work if your
+  <code>pageName</code> string ends with it.
+
 Now all you have to do is use this component in your page.
 
 ### to run local testing app
