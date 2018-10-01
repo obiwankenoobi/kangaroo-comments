@@ -5,22 +5,6 @@ import 'semantic-ui-css/semantic.min.css';
 import ReactMarkdown from 'react-markdown';
 
 const SingleCommentCard = props => {
-  console.log('props.userAvatar', props.userAvatar);
-  console.log('type of time ', new Date(props.date));
-  console.log('commant date', new Date(props.date).toDateString().split(' '));
-  console.log('corrent date', new Date().toDateString().split(' '));
-  console.log(
-    'equel?',
-    new Date(props.date)
-      .toDateString()
-      .split(' ')
-      .join() ==
-      new Date()
-        .toDateString()
-        .split(' ')
-        .join()
-  );
-
   // check if the comment made today
   function checkIfcommentToday() {
     if (
@@ -91,7 +75,7 @@ const SingleCommentCard = props => {
       )}
     </div>
   );
-  console.log('props.lastComment', props.lastComment);
+
   return (
     <div
       style={{

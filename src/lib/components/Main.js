@@ -77,7 +77,7 @@ class Main extends Component {
 
   // function to send comment to the root of the page and not to other comment
   sendRootComment = () => {
-    console.log('this.props.user.name', this.props.user.name);
+    helpers.alertD('this.props.user.name', this.props.user.name);
     let commentToAdd = {
       usernameWhoComment: this.props.user.name, // the user name we fetched from google auth
       userAvatar: this.props.user.image, // the user avatar we fetched from google auth
@@ -176,7 +176,7 @@ class Main extends Component {
     socket.on(
       `googleAuth-${this.props.siteName}-${this.props.pageName}-${token}`,
       userAuth => {
-        console.log('getting data', userAuth);
+        helpers.alertD('getting data', userAuth);
 
         // setting the user name in the localstorage
         let userSession = {
@@ -186,7 +186,7 @@ class Main extends Component {
               ? userAuth.user.photos[0].value
               : '',
         };
-        console.log('userSession', userSession);
+        helpers.alertD('userSession', userSession);
         localStorage.setItem('user', JSON.stringify(userSession));
         this.props.loginHandler(JSON.parse(localStorage.getItem('user')));
       }
@@ -209,10 +209,10 @@ class Main extends Component {
   render() {
     // TEST FOR COMMENTS ARRAY
     if (this.props.commentsArray.length > 0) {
-      console.log(this.props.commentsArray);
+      helpers.alertD(this.props.commentsArray);
     }
 
-    console.log('this.props.user', this.props.user);
+    helpers.alertD('this.props.user', this.props.user);
     // css to make the error validation on each input
     let textBoxErrorCSS = {
       borderColor: this.state.noEnoughChars ? this.state.borderInputError : '',
