@@ -253,7 +253,8 @@ class Main extends Component {
                   fontSize: '12px',
                   width: '136px',
                   height: '30px',
-                  margin: 0,
+                  marginTop: 3,
+                  marginLeft: 2,
                   borderRadius: '5px',
                 }}
                 onClick={() =>

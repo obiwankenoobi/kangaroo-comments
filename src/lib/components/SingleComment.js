@@ -127,7 +127,8 @@ class SingleComment extends Component {
               fontSize: '12px',
               width: '136px',
               height: '30px',
-              margin: 0,
+              marginTop: 3,
+              marginLeft: 2,
               borderRadius: '5px',
             }}
             onClick={() =>
@@ -146,7 +147,7 @@ class SingleComment extends Component {
       <div
         style={{
           height: '100%',
-          paddingLeft: `${(this.props.depth * 3).toString()}rem`,
+          paddingLeft: `${this.props.depth * (1.2).toString()}rem`,
           //marginBottom: `${this.state.openReply ? '50px': ''}` // the margin to use when reply mode is on to allow the textbox be visible
         }}
         className="msg-container"
@@ -173,7 +174,7 @@ class SingleComment extends Component {
               type="text"
               onChange={e => this.handleInput(e)}
               name="replyMsg"
-              className="replyMsg"
+              className="textBox"
             />
             {this.state.noEnoughChars ? (
               <label
