@@ -178,7 +178,7 @@ class Main extends Component {
       userAuth => {
         helpers.alertD('getting data', userAuth);
 
-        // setting the user name in the localstorage
+        // setting the user name and image in the localstorage
         let userSession = {
           name: userAuth.user.displayName,
           image:
@@ -211,6 +211,8 @@ class Main extends Component {
     if (this.props.commentsArray.length > 0) {
       helpers.alertD(this.props.commentsArray);
     }
+
+
 
     helpers.alertD('this.props.user', this.props.user);
     // css to make the error validation on each input
