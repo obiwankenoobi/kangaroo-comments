@@ -19,6 +19,10 @@ import MetaTags from 'react-meta-tags';
 import crypto from 'crypto';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 
+/**
+ ** pageName CANT end with special chars as (#$%&)
+ **/
+
 class Main extends Component {
   constructor(props) {
     super(props);

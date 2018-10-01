@@ -1,5 +1,5 @@
 const helpers = {
-  __DEBUG__: true,
+  __DEBUG__: false,
   alertD: function(...args) {
     if (this.__DEBUG__) {
       args.map(arg => {
