@@ -1,6 +1,6 @@
 {
   "name": "kangaroo-comments",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "description": "Comments system for your app",
   "main": "build/index.js",
   "scripts": {
