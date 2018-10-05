@@ -24,7 +24,8 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.3.3",
     "semantic-ui-react": "^0.82.3",
-    "socket.io-client": "^2.0.3"
+    "socket.io-client": "^2.0.3",
+    "xss": "^1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "7.1.6",

@@ -9,6 +9,7 @@ import MaterialBtn from '@material-ui/core/Button';
 import NameLogin from './NameLogin';
 import { TextArea } from 'semantic-ui-react';
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import xss from 'xss';
 
 class SingleComment extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class SingleComment extends Component {
       siteName: this.props.websiteData.siteName, // the website name (ref)
       pageName: this.props.websiteData.pageName, // the spesific page name (ref)
       commentIdToReplyOn: commentIdToReplyOn, // the comment id to reply on (ref)
-      text: text, // the text to reply on
+      text: xss(text), // the text to reply on
       date: new Date(),
     };
 

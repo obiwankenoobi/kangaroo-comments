@@ -18,6 +18,7 @@ import { TextArea } from 'semantic-ui-react';
 import MetaTags from 'react-meta-tags';
 import crypto from 'crypto';
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import xss from 'xss';
 
 /**
  ** pageName CANT end with special chars as (#$%&)
@@ -88,7 +89,7 @@ class Main extends Component {
       userAvatar: this.props.user.image, // the user avatar we fetched from google auth
       siteName: this.props.websiteData.siteName, // the website name
       pageName: this.props.websiteData.pageName, // the spesific page name
-      text: this.state.textBox, // the text to reply on
+      text: xss(this.state.textBox), // the text to reply on
       date: new Date(),
     };
 
