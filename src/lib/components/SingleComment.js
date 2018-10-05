@@ -66,7 +66,7 @@ class SingleComment extends Component {
     commentIdToReplyOn, // comment id to reply on (each comment has uniqe ID as ref)
     text // the text of comments
   ) => {
-    let commentToAdd = {
+    const commentToAdd = {
       usernameWhoComment: this.props.user.name, // the username who make the comment
       userAvatar: this.props.user.image, // the user avatar we fetched from google auth
       siteName: this.props.websiteData.siteName, // the website name (ref)
@@ -76,7 +76,16 @@ class SingleComment extends Component {
       date: new Date(),
     };
 
-    axios.post(`${helpers.server}/addcomment`, commentToAdd).then(() => {
+    const config = {
+      method: 'POST',
+      url: `${helpers.server}/addcomment`,
+      data: commentToAdd,
+      headers: {
+        Authorization: `${this.props.user.accessToken}`,
+      },
+    };
+
+    axios(config).then(() => {
       this.setState(
         {
           openReply: false, // close the reply section after making the comment

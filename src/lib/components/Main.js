@@ -81,8 +81,9 @@ class Main extends Component {
 
   // function to send comment to the root of the page and not to other comment
   sendRootComment = () => {
-    helpers.alertD('this.props.user.name', this.props.user.name);
-    let commentToAdd = {
+    helpers.alertD('this.props.user.name', this.props.user);
+
+    const commentToAdd = {
       usernameWhoComment: this.props.user.name, // the user name we fetched from google auth
       userAvatar: this.props.user.image, // the user avatar we fetched from google auth
       siteName: this.props.websiteData.siteName, // the website name
@@ -90,7 +91,17 @@ class Main extends Component {
       text: this.state.textBox, // the text to reply on
       date: new Date(),
     };
-    axios.post(`${helpers.server}/addcomment`, commentToAdd).then(res => {
+
+    const config = {
+      method: 'POST',
+      url: `${helpers.server}/addcomment`,
+      data: commentToAdd,
+      headers: {
+        Authorization: `${this.props.user.accessToken}`,
+      },
+    };
+
+    axios(config).then(res => {
       helpers.alertD('response after comment sent', res.data);
 
       // the server will return 'noSiteFound' if there isnt match with the data
@@ -193,10 +204,11 @@ class Main extends Component {
             userAuth.user.photos.length > 0
               ? userAuth.user.photos[0].value
               : '',
+          accessToken: userAuth.user.accessToken,
         };
         helpers.alertD('userSession', userSession);
         localStorage.setItem('user', JSON.stringify(userSession));
-        this.props.loginHandler(JSON.parse(localStorage.getItem('user')));
+        this.props.loginHandler(JSON.parse(localStorage.getItem('user'))); // setting the user object into redux store
       }
     );
   };
