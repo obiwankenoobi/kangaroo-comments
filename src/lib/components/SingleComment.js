@@ -156,7 +156,7 @@ class SingleComment extends Component {
       <div
         style={{
           height: '100%',
-          paddingLeft: `${this.props.depth * (1.2).toString()}rem`,
+          paddingLeft: `${this.props.depth * (2).toString()}rem`,
           //marginBottom: `${this.state.openReply ? '50px': ''}` // the margin to use when reply mode is on to allow the textbox be visible
         }}
         className="msg-container"
