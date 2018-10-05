@@ -7,7 +7,7 @@ const helpers = {
       });
     }
   },
-  server: 'http://10.0.0.13:3011', //'https://commentssystem.herokuapp.com', //
+  server: 'https://commentssystem.herokuapp.com', //'http://10.0.0.13:3011', //, //
   siteName:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3ZWJzaXRlTmFtZSI6InRlc3RpbmciLCJpYXQiOjE1MzY3NTM3ODd9.dVn2x_8SCnEGtCpU2lZsH8xXGkU9MdayT0h_OhxWyaM',
   pageName: 'page1',
